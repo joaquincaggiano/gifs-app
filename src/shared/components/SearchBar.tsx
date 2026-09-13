@@ -16,7 +16,7 @@ export const SearchBar = ({
 
     const timeout = setTimeout(() => {
       onSearch(query);
-    }, 400);
+    }, 600);
 
     return () => clearTimeout(timeout);
   }, [query, onSearch]);
