@@ -13,7 +13,7 @@ export const GifsApp = () => {
   };
 
   const handleSearch = (query: string) => {
-    setPreviousTerms([...previousTerms, query]);
+    console.log(query);
   };
 
   return (
