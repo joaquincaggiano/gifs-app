@@ -4,6 +4,7 @@ import { PreviousSearches } from "./gifs/components/PreviousSearches";
 import { mockGifs } from "./mock-data/gifs.mock";
 import { CustomHeader } from "./shared/components/CustomHeader";
 import { SearchBar } from "./shared/components/SearchBar";
+import { getGifsByQueryAction } from "./gifs/actions/get-gifs-by-query.action";
 
 export const GifsApp = () => {
   const [previousTerms, setPreviousTerms] = useState<string[]>(["Goku"]);
@@ -12,7 +13,7 @@ export const GifsApp = () => {
     console.log(term);
   };
 
-  const handleSearch = (query: string) => {
+  const handleSearch = async (query: string) => {
     let newQuery = query.trim().toLowerCase();
 
     if (newQuery.length === 0) return;
@@ -20,6 +21,9 @@ export const GifsApp = () => {
     if (previousTerms.includes(newQuery)) return;
 
     setPreviousTerms((prev) => [newQuery, ...prev].slice(0, 8));
+
+    const gifs = await getGifsByQueryAction(newQuery);
+    console.log(gifs);
   };
 
   return (
