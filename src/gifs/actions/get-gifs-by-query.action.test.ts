@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach } from "vitest";
+import { describe, test, expect, beforeEach, vi } from "vitest";
 import { getGifsByQueryAction } from "./get-gifs-by-query.action";
 import AxiosMockAdapter from "axios-mock-adapter";
 import { giphyApi } from "../api/giphy.api";
@@ -38,6 +38,10 @@ describe("getGifsByQueryAction", () => {
   });
 
   test("should handle error when the API returns an error", async () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
     mock
       .onGet("/search")
       .reply(500, { data: { message: "Internal server error" } });
@@ -45,5 +49,7 @@ describe("getGifsByQueryAction", () => {
     const gifs = await getGifsByQueryAction("Naruto");
 
     expect(gifs.length).toBe(0);
+    expect(consoleErrorSpy).toHaveBeenCalled();
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.anything());
   });
 });
